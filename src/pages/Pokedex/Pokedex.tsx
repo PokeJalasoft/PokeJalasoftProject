@@ -1,11 +1,20 @@
+import Layout from "./layout";
+
 function Pokedex() {
   return (
     <>
-      <div>
-          This is a placeholder for a Pokedex
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <Layout />
       </div>
     </>
-  )
+  );
 }
 
-export default Pokedex
+export default Pokedex;
