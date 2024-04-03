@@ -20,9 +20,21 @@ const columns: GridColDef[] = [
         headerName: 'Details',
         width: 100,
         renderCell: () => (
-            <Button variant="contained" color="primary" sx={{ bgcolor: '#32719E', color: 'white', textTransform: 'none' }}>
+            <Button
+                variant="contained"
+                sx={{
+                    bgcolor: '#436686',
+                    color: 'white',
+                    textTransform: 'none',
+                    borderRadius: '25px',
+                    height: '30px',
+                    width: '30px',
+                    marginRight: '10px',
+                }}
+            >
                 Show
             </Button>
+
         ),
     },
 ];
