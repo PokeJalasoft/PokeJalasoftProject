@@ -4,6 +4,16 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material';
 
+interface Pokemon {
+    image: string;
+    name: string;
+    type: string;
+}
+
+interface PokemonDataGridProps {
+    rows: Pokemon[];
+}
+
 const columns: GridColDef[] = [
     {
         field: 'image',
@@ -34,23 +44,30 @@ const columns: GridColDef[] = [
             >
                 Show
             </Button>
-
         ),
     },
 ];
 
-interface PokemonDataGridProps {
-    rows: { image: string; name: string; type: string }[];
-}
-
 export default function PokemonDataGrid({ rows }: PokemonDataGridProps) {
-    const prefersDarkMode =
-        window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const [prefersDarkMode, setPrefersDarkMode] = React.useState(false);
+
+    React.useEffect(() => {
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        setPrefersDarkMode(mediaQuery.matches);
+
+        const handleChange = (e: MediaQueryListEvent) => {
+            setPrefersDarkMode(e.matches);
+        };
+
+        mediaQuery.addEventListener('change', handleChange);
+        return () => mediaQuery.removeEventListener('change', handleChange);
+    }, []);
+
     const theme = React.useMemo(
         () =>
             createTheme({
                 palette: {
-                    mode: prefersDarkMode ? 'dark' : 'light',
+                    mode: 'light',
                 },
             }),
         [prefersDarkMode]
@@ -58,7 +75,7 @@ export default function PokemonDataGrid({ rows }: PokemonDataGridProps) {
 
     return (
         <ThemeProvider theme={theme}>
-            <Box sx={{ height: 400, width: '90%', maxWidth: '560px', margin: '0 auto' }}>
+            <Box sx={{ height: 600, width: '100%', maxWidth: '600px', margin: '0 auto' }}>
                 <DataGrid
                     rows={rows}
                     columns={columns}
