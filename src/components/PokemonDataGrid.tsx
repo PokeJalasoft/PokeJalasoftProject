@@ -6,8 +6,8 @@ import { createTheme, ThemeProvider } from '@mui/material';
 
 const columns: GridColDef[] = [
     {
-        field: 'picture',
-        headerName: 'Picture',
+        field: 'image',
+        headerName: 'Image',
         width: 150,
         renderCell: (params) => (
             <img src={params.value} alt="Pokemon" style={{ maxWidth: '100%', maxHeight: '100%' }} />
@@ -40,7 +40,7 @@ const columns: GridColDef[] = [
 ];
 
 interface PokemonDataGridProps {
-    rows: { picture: string; name: string; type: string }[];
+    rows: { image: string; name: string; type: string }[];
 }
 
 export default function PokemonDataGrid({ rows }: PokemonDataGridProps) {
