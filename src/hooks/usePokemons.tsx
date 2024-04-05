@@ -16,7 +16,7 @@ interface Pokemon {
 
 const URL = 'https://pokeapi.co/api/v2/pokemon';
 
-const usePokemonRequest = () => {
+const usePokemons = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [pokemonData, setPokemonData] = useState<Pokemon[]>([]);
@@ -48,4 +48,4 @@ const usePokemonRequest = () => {
   return { loading, error, pokemonData };
 };
 
-export default usePokemonRequest;
+export default usePokemons;
