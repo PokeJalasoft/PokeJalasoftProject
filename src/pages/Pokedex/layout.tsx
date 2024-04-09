@@ -1,13 +1,18 @@
 import { Card, CardContent, Typography } from "@mui/material";
 import CustomButton from "../../components/Button";
+import { ReactNode } from "react";
 
-export default function BasicCard() {
+interface BasicCardProps {
+  children?: ReactNode;
+}
+
+export default function BasicCard({ children }: Readonly<BasicCardProps>) {
   const handleNext = () => {
-    console.log("Handle next button click")
+    console.log("Handle next button click");
   };
 
   const handlePrevious = () => {
-    console.log("Handle previous button click")
+    console.log("Handle previous button click");
   };
 
   return (
@@ -15,7 +20,7 @@ export default function BasicCard() {
       variant="outlined"
       sx={{
         minWidth: 500,
-        minHeight: 800,
+        minHeight: 500,
         backgroundColor: "rgb(244, 245, 248)",
         display: "flex",
         flexDirection: "column",
@@ -28,13 +33,16 @@ export default function BasicCard() {
         </Typography>
         <div
           style={{
-            width: 500,
-            height: 500,
-            backgroundColor: "white",
-            marginBottom: "100px",
-            marginTop: "100px",
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center", 
+            alignItems: "center",
           }}
-        ></div>
+        >
+          {children}
+        </div>
+
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <CustomButton label="Previous" onClick={handlePrevious} />
           <CustomButton label="Next" onClick={handleNext} />

@@ -4,5 +4,10 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: "/PokeJalasoftProject/"
+  base: "/PokeJalasoftProject/",
+  resolve: {
+    alias: {
+      '@hooks': '/src/hooks'
+    }
+  }
 })
