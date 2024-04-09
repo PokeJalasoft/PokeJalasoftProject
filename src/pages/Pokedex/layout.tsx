@@ -1,13 +1,20 @@
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
+import { Card, CardContent, Typography } from "@mui/material";
+import CustomButton from "../../components/Button";
 import { ReactNode } from "react";
 
 interface BasicCardProps {
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 export default function BasicCard({ children }: BasicCardProps) {
+  const handleNext = () => {
+    console.log("Handle next button click");
+  };
+
+  const handlePrevious = () => {
+    console.log("Handle previous button click");
+  };
+
   return (
     <Card
       variant="outlined"
@@ -24,7 +31,22 @@ export default function BasicCard({ children }: BasicCardProps) {
         <Typography variant="h5" component="div">
           Pokemon Web App
         </Typography>
-        {children}
+        <div
+          style={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center", 
+            alignItems: "center",
+          }}
+        >
+          {children}
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <CustomButton label="Previous" onClick={handlePrevious} />
+          <CustomButton label="Next" onClick={handleNext} />
+        </div>
       </CardContent>
     </Card>
   );
