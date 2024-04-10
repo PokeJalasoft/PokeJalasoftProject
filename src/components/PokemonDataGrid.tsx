@@ -1,11 +1,15 @@
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
+import DetailsWindow from '../modals/DetailsModal';
 
 interface Pokemon {
+    id: number;
     image: string;
     name: string;
     type: string;
+    url: string;
 }
 
 interface PokemonDataGridProps {
@@ -27,7 +31,29 @@ const columns: GridColDef[] = [
         field: 'details',
         headerName: 'Details',
         width: 100,
-        renderCell: () => (
+        renderCell: (params) => (
+            <ShowButton pokemon={params.row} />
+        ),
+    },
+];
+
+interface ShowButtonProps {
+    pokemon: Pokemon;
+}
+
+function ShowButton({ pokemon }: Readonly<ShowButtonProps>) {
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    return (
+        <>
             <Button
                 variant="contained"
                 sx={{
@@ -39,15 +65,16 @@ const columns: GridColDef[] = [
                     width: '30px',
                     marginRight: '10px',
                 }}
+                onClick={handleOpen}
             >
                 Show
             </Button>
-        ),
-    },
-];
+            <DetailsWindow isOpen={open} onClose={handleClose} pokemon={pokemon}  />
+        </>
+    );
+}
 
-export default function PokemonDataGrid({ rows }: PokemonDataGridProps) {
-
+export default function PokemonDataGrid({ rows }: Readonly<PokemonDataGridProps>) {
     return (
         <Box sx={{ height: 600, width: '100%', maxWidth: '600px', margin: '0 auto' }}>
             <DataGrid
@@ -63,6 +90,10 @@ export default function PokemonDataGrid({ rows }: PokemonDataGridProps) {
                 pageSizeOptions={[20]}
                 disableRowSelectionOnClick
                 hideFooter
+                disableColumnResize
+                disableColumnFilter
+                disableColumnSorting
+                disableColumnMenu
             />
         </Box>
     );
