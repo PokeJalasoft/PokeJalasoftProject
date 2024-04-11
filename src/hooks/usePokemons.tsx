@@ -36,7 +36,7 @@ const usePokemons = () => {
 
       const pokemonDetails = await Promise.all(pokemonDetailsPromises);
 
-      setPokemons(pokemons => [...pokemons, ...pokemonDetails]);
+      setPokemons(pokemonDetails);
       setLoading(false);
     } catch (error) {
       setError(error as Error);
@@ -48,11 +48,15 @@ const usePokemons = () => {
     fetchPokemons(offset);
   }, [offset]);
 
-  const loadMorePokemons = () => {
+  const loadPrevious = () => {
+    setOffset(offset => offset - 20);
+  };
+
+  const loadNext = () => {
     setOffset(offset => offset + 20);
   };
 
-  return { pokemons, loading, error, loadMorePokemons };
+  return { pokemons, loading, error, loadPrevious, loadNext, offset };
 };
 
 export default usePokemons;
