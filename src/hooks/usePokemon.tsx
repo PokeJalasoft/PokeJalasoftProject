@@ -13,6 +13,7 @@ interface Pokemon {
     picture: string;
     details: PokemonDetails;
     locations: string[];
+    abilities: string[];
 }
 
 const usePokemon = (pokemonUrl: string) => {
@@ -26,7 +27,7 @@ const usePokemon = (pokemonUrl: string) => {
 
             try {
                 const response = await axios.get(pokemonUrl);
-                const { name, types, sprites, height, weight, base_experience, location_area_encounters } = response.data;
+                const { name, types, sprites, height, weight, base_experience, location_area_encounters, abilities } = response.data;
                 const locationResponse = await axios.get(location_area_encounters);
                 const locations: string[] = locationResponse.data
                 .map((locationInfo: { location_area: { name: string } }) => {
@@ -43,6 +44,7 @@ const usePokemon = (pokemonUrl: string) => {
                         baseExperience: base_experience,
                     },
                     locations: uniqueLocations,
+                    abilities: abilities.map((ability: { ability: { name: string } }) => ability.ability.name),
                 });
             } catch (err) {
                 setError(err as Error);
