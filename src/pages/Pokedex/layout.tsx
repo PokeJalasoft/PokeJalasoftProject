@@ -3,18 +3,13 @@ import CustomButton from "../../components/Button";
 import { ReactNode } from "react";
 
 interface BasicCardProps {
-  children?: ReactNode;
+  children: ReactNode;
+  loadPrevious: () => void;
+  loadNext: () => void;
+  offset: number;
 }
 
-export default function BasicCard({ children }: Readonly<BasicCardProps>) {
-  const handleNext = () => {
-    console.log("Handle next button click");
-  };
-
-  const handlePrevious = () => {
-    console.log("Handle previous button click");
-  };
-
+export default function BasicCard({ children, loadPrevious, loadNext, offset }: Readonly<BasicCardProps>) {
   return (
     <Card
       variant="outlined"
@@ -44,8 +39,8 @@ export default function BasicCard({ children }: Readonly<BasicCardProps>) {
         </div>
 
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <CustomButton label="Previous" onClick={handlePrevious} />
-          <CustomButton label="Next" onClick={handleNext} />
+          <CustomButton label="Previous" onClick={loadPrevious} isDisabled={offset === 0} />
+          <CustomButton label="Next" onClick={loadNext} isDisabled={false}/>
         </div>
       </CardContent>
     </Card>
