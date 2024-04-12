@@ -80,6 +80,12 @@ const DetailsWindow: React.FC<DetailsWindowProps> = ({ isOpen, onClose, pokemon 
                                 <li>Weight: {pokemonDetails.details.weight}</li>
                                 <li>Base Experience: {pokemonDetails.details.baseExperience}</li>
                             </ul>
+                            <div><b>Abilities:</b></div>
+                            <ul>
+                                {pokemonDetails.abilities.map((ability, index) => (
+                                    <li key={index}>{ability}</li>
+                                ))}
+                            </ul>
                             <div><b>Locations:</b></div>
                             {pokemonDetails.locations.length > 0 ? (
                                 <ul>
