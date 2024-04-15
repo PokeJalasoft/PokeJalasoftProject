@@ -10,6 +10,7 @@ interface Pokemon {
     name: string;
     type: string;
     url: string;
+    pokemonSound: string;
 }
 
 interface PokemonDataGridProps {
