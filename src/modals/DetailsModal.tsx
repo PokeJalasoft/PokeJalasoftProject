@@ -3,6 +3,7 @@ import Modal from '@mui/material/Modal';
 import { Card, CardContent, Box, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import usePokemon from '@hooks/usePokemon';
+import PlayButton from '../components/PlayButton';
 
 interface DetailsWindowProps {
     isOpen: boolean;
@@ -13,6 +14,7 @@ interface DetailsWindowProps {
         image: string;
         type: string;
         url: string;
+        pokemonSound: string;
     } | null;
 }
 
@@ -71,6 +73,7 @@ const DetailsWindow: React.FC<DetailsWindowProps> = ({ isOpen, onClose, pokemon 
                                 <div>
                                     <div><b>Name: </b>{pokemonDetails.name}</div>
                                     <div><b>Type: </b>{pokemonDetails.types.join(', ')}</div>
+                                    <PlayButton audioUrl={pokemon?.pokemonSound ?? ''} />
                                 </div>
                             </div>
                             <div><b>Features:</b></div>
