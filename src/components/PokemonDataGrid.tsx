@@ -86,7 +86,7 @@ function CustomToolbar() {
 
 export default function PokemonDataGrid({ rows }: Readonly<PokemonDataGridProps>) {
     return (
-        <Box sx={{ height: 600, width: '100%', maxWidth: '600px', margin: '0 auto' }}>
+        <Box sx={{ height: 600, width: '100%', maxWidth: '600px', margin: '0 auto', paddingBottom: '30px' }}>
             <DataGrid
                 rows={rows}
                 columns={columns}
@@ -104,6 +104,7 @@ export default function PokemonDataGrid({ rows }: Readonly<PokemonDataGridProps>
                 disableColumnSorting
                 disableColumnMenu
                 slots={{ toolbar: CustomToolbar }}
+                sx={{ backgroundColor: 'white' }}
             />
         </Box>
     );

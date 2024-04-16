@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography } from "@mui/material";
+import { Card, CardContent } from "@mui/material";
 import CustomButton from "../../components/Button";
 import { ReactNode } from "react";
 
@@ -23,15 +23,19 @@ export default function BasicCard({ children, loadPrevious, loadNext, offset }: 
       }}
     >
       <CardContent>
-        <Typography variant="h5" component="div">
-          Pokemon Web App
-        </Typography>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <img
+            src="https://1000logos.net/wp-content/uploads/2017/05/Pokemon-Logo-500x313.png"
+            alt="Pokemon Logo"
+            style={{ width: "50%", height: "auto" }}
+          />
+        </div>
         <div
           style={{
             flex: 1,
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center", 
+            justifyContent: "center",
             alignItems: "center",
           }}
         >
@@ -40,7 +44,7 @@ export default function BasicCard({ children, loadPrevious, loadNext, offset }: 
 
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <CustomButton label="Previous" onClick={loadPrevious} isDisabled={offset === 0} />
-          <CustomButton label="Next" onClick={loadNext} isDisabled={false}/>
+          <CustomButton label="Next" onClick={loadNext} isDisabled={false} />
         </div>
       </CardContent>
     </Card>
