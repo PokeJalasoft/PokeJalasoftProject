@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import Box from '@mui/material/Box';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridToolbarFilterButton, GridToolbarExport } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import DetailsWindow from '../modals/DetailsModal';
+import { useState } from 'react';
 
 interface Pokemon {
     id: number;
@@ -69,8 +69,17 @@ function ShowButton({ pokemon }: Readonly<ShowButtonProps>) {
             >
                 Show
             </Button>
-            <DetailsWindow isOpen={open} onClose={handleClose} pokemon={pokemon}  />
+            <DetailsWindow isOpen={open} onClose={handleClose} pokemon={pokemon} />
         </>
+    );
+}
+
+function CustomToolbar() {
+    return (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+            <GridToolbarFilterButton />
+            <GridToolbarExport printOptions={{ disableToolbarButton: true }} />
+        </div>
     );
 }
 
@@ -91,10 +100,11 @@ export default function PokemonDataGrid({ rows }: Readonly<PokemonDataGridProps>
                 disableRowSelectionOnClick
                 hideFooter
                 disableColumnResize
-                disableColumnFilter
                 disableColumnSorting
                 disableColumnMenu
+                slots={{ toolbar: CustomToolbar }}
             />
         </Box>
     );
 }
+
