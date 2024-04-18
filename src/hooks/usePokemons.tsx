@@ -7,7 +7,10 @@ interface Pokemon {
   type: string; 
   image: string;
   url: string;
+  pokemonSound: string;
 }
+
+const BASE_SOUND_URL = 'https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest';
 
 const usePokemons = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -30,6 +33,7 @@ const usePokemons = () => {
           type: types.map((type: { type: { name: string } }) => type.type.name).join(', '),
           image: sprites.front_default,
           url: result.url,
+          pokemonSound: `${BASE_SOUND_URL}/${offset + index + 1}.ogg`
         };
         return pokemon;
       });
