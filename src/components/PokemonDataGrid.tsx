@@ -22,6 +22,8 @@ const columns: GridColDef[] = [
         field: 'image',
         headerName: 'Image',
         width: 150,
+        disableColumnMenu : true,
+        filterable:false,
         renderCell: (params) => (
             <img src={params.value} alt="Pokemon" style={{ maxWidth: '100%', maxHeight: '100%' }} />
         ),
@@ -31,6 +33,9 @@ const columns: GridColDef[] = [
     {
         field: 'details',
         headerName: 'Details',
+        disableExport:true,
+        disableColumnMenu : true,
+        filterable:false,
         width: 100,
         renderCell: (params) => (
             <ShowButton pokemon={params.row} />
@@ -86,7 +91,7 @@ function CustomToolbar() {
 
 export default function PokemonDataGrid({ rows }: Readonly<PokemonDataGridProps>) {
     return (
-        <Box sx={{ height: 600, width: '100%', maxWidth: '600px', margin: '0 auto', paddingBottom: '30px' }}>
+        <Box sx={{ height: 600, width: '100%', maxWidth: '600px', margin: '0 auto' }}>
             <DataGrid
                 rows={rows}
                 columns={columns}
@@ -104,7 +109,6 @@ export default function PokemonDataGrid({ rows }: Readonly<PokemonDataGridProps>
                 disableColumnSorting
                 disableColumnMenu
                 slots={{ toolbar: CustomToolbar }}
-                sx={{ backgroundColor: 'white' }}
             />
         </Box>
     );
