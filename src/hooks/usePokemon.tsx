@@ -1,62 +1,53 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Pokemon } from './PokemonInterfaces';
 
-interface PokemonDetails {
-    height: number;
-    weight: number;
-    baseExperience: number;
-}
+const fetchPokemonDetails = async (pokemon: Pokemon): Promise<Pokemon> => {
+    const response = await axios.get(pokemon.url);
+    const { name, types, sprites, height, weight, base_experience, abilities } = response.data;
+    const locationResponse = await axios.get(response.data.location_area_encounters);
+    const locations: string[] = Array.from(new Set(locationResponse.data.map((locationInfo: { location_area: { name: string } }) => locationInfo.location_area.name)));
+    return {
+        id: pokemon.id,
+        name,
+        types: types.map((type: { type: { name: string } }) => type.type.name),
+        image: sprites.front_default,
+        details: {
+            height,
+            weight,
+            baseExperience: base_experience,
+        },
+        pokemonSound: pokemon.pokemonSound,
+        url: pokemon.url,
+        locations,
+        abilities: abilities.map((ability: { ability: { name: string } }) => ability.ability.name),
+    };
+};
 
-interface Pokemon {
-    name: string;
-    types: string[];
-    picture: string;
-    details: PokemonDetails;
-    locations: string[];
-    abilities: string[];
-}
-
-const usePokemon = (pokemonUrl: string) => {
+const usePokemon = (pokemon: Pokemon | null) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<Error | null>(null);
-    const [pokemon, setPokemon] = useState<Pokemon | null>(null);
+    const [fetchedPokemon, setFetchedPokemon] = useState<Pokemon | null>(null);
 
     useEffect(() => {
         const fetchPokemon = async () => {
+            if (!pokemon) return;
             setLoading(true);
-
             try {
-                const response = await axios.get(pokemonUrl);
-                const { name, types, sprites, height, weight, base_experience, location_area_encounters, abilities } = response.data;
-                const locationResponse = await axios.get(location_area_encounters);
-                const locations: string[] = locationResponse.data
-                .map((locationInfo: { location_area: { name: string } }) => {
-                    return locationInfo.location_area.name; 
-                });
-                const uniqueLocations = Array.from(new Set(locations));
-                setPokemon({
-                    name,
-                    types: types.map((type: { type: { name: string } }) => type.type.name),
-                    picture: sprites.front_default,
-                    details: {
-                        height,
-                        weight,
-                        baseExperience: base_experience,
-                    },
-                    locations: uniqueLocations,
-                    abilities: abilities.map((ability: { ability: { name: string } }) => ability.ability.name),
-                });
+                const pokemonDetails = await fetchPokemonDetails(pokemon);
+                setFetchedPokemon(pokemonDetails);
             } catch (err) {
-                setError(err as Error);
+                const errorObj = err instanceof Error ? err : new Error(String(err));
+                setError(errorObj);
             } finally {
                 setLoading(false);
             }
         };
 
         fetchPokemon();
-    }, [pokemonUrl]);
+    }, [pokemon]);
 
-    return { pokemon, loading, error };
+    return { pokemon: fetchedPokemon, loading, error };
 };
 
 export default usePokemon;
