@@ -1,25 +1,18 @@
 import React from 'react';
-import Modal from '@mui/material/Modal';
-import { Card, CardContent, Box, Button } from '@mui/material';
+import { Modal, Box, Button, Card, CardContent } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import usePokemon from '@hooks/usePokemon';
 import PlayButton from '../components/PlayButton';
+import { Pokemon } from '@hooks/PokemonInterfaces';
 
 interface DetailsWindowProps {
     isOpen: boolean;
     onClose: () => void;
-    pokemon: {
-        id: number;
-        name: string;
-        image: string;
-        type: string;
-        url: string;
-        pokemonSound: string;
-    } | null;
+    pokemon: Pokemon | null;
 }
 
 const DetailsWindow: React.FC<DetailsWindowProps> = ({ isOpen, onClose, pokemon }) => {
-    const { pokemon: pokemonDetails, loading, error } = usePokemon(pokemon?.url ?? '');
+    const { pokemon: pokemonDetails, loading, error } = usePokemon(pokemon);
 
     return (
         <Modal open={isOpen} onClose={onClose} aria-labelledby="pokemon-details-modal" aria-describedby="pokemon-details-modal-description">
@@ -60,7 +53,7 @@ const DetailsWindow: React.FC<DetailsWindowProps> = ({ isOpen, onClose, pokemon 
                         <CardContent>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <img
-                                    src={pokemonDetails.picture}
+                                    src={pokemonDetails.image}
                                     alt={pokemonDetails.name}
                                     style={{
                                         width: '180px',
@@ -73,7 +66,7 @@ const DetailsWindow: React.FC<DetailsWindowProps> = ({ isOpen, onClose, pokemon 
                                 <div>
                                     <div><b>Name: </b>{pokemonDetails.name}</div>
                                     <div><b>Type: </b>{pokemonDetails.types.join(', ')}</div>
-                                    <PlayButton audioUrl={pokemon?.pokemonSound ?? ''} />
+                                    <PlayButton audioUrl={pokemonDetails.pokemonSound ?? ''} />
                                 </div>
                             </div>
                             <div><b>Features:</b></div>

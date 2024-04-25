@@ -3,15 +3,7 @@ import { DataGrid, GridColDef, GridToolbarFilterButton, GridToolbarExport } from
 import Button from '@mui/material/Button';
 import DetailsWindow from '../modals/DetailsModal';
 import { useState } from 'react';
-
-interface Pokemon {
-    id: number;
-    image: string;
-    name: string;
-    type: string;
-    url: string;
-    pokemonSound: string;
-}
+import { Pokemon } from '@hooks/PokemonInterfaces';
 
 interface PokemonDataGridProps {
     rows: Pokemon[];
@@ -29,7 +21,7 @@ const columns: GridColDef[] = [
         ),
     },
     { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'type', headerName: 'Type', width: 150 },
+    { field: 'types', headerName: 'Type', width: 150 },
     {
         field: 'details',
         headerName: 'Details',
