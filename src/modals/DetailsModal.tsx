@@ -11,9 +11,62 @@ interface DetailsWindowProps {
     pokemon: Pokemon | null;
 }
 
-const DetailsWindow: React.FC<DetailsWindowProps> = ({ isOpen, onClose, pokemon }) => {
+const PokemonDetails: React.FC<{ pokemon: Pokemon }> = ({ pokemon }) => {
     const { pokemon: pokemonDetails, loading, error } = usePokemon(pokemon);
 
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
+    if (!pokemonDetails) return null;
+
+    return (
+        <Card variant="outlined" sx={{ minWidth: 400, minHeight: 200, margin: 'auto', fontFamily: 'Arial, sans-serif' }}>
+            <CardContent>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <img
+                        src={pokemonDetails.image}
+                        alt={pokemonDetails.name}
+                        style={{
+                            width: '180px',
+                            height: '180px',
+                            marginRight: '10px',
+                            border: '2px solid black',
+                            borderRadius: '8px',
+                        }}
+                    />
+                    <div>
+                        <div><b>Name: </b>{pokemonDetails.name}</div>
+                        <div><b>Type: </b>{pokemonDetails.types.join(', ')}</div>
+                        <PlayButton audioUrl={pokemonDetails.pokemonSound} />
+                    </div>
+                </div>
+                <div><b>Features:</b></div>
+                <ul>
+                    <li>Height: {pokemonDetails.details.height}</li>
+                    <li>Weight: {pokemonDetails.details.weight}</li>
+                    <li>Base Experience: {pokemonDetails.details.baseExperience}</li>
+                </ul>
+                <div><b>Abilities:</b></div>
+                <ul>
+                    {pokemonDetails.abilities.map((ability: string, index: number) => (
+                        <li key={index}>{ability}</li>
+                    ))}
+                </ul>
+                <div><b>Locations:</b></div>
+                {pokemonDetails.locations.length > 0 ? (
+                    <ul>
+                        {pokemonDetails.locations.map((location: string) => (
+                            <li key={location}>{location}</li>
+                        ))}
+                    </ul>
+                ) : (
+                    <div>No known locations</div>
+                )}
+            </CardContent>
+        </Card>
+    );
+};
+
+const DetailsWindow: React.FC<DetailsWindowProps> = ({ isOpen, onClose, pokemon }) => {
     return (
         <Modal open={isOpen} onClose={onClose} aria-labelledby="pokemon-details-modal" aria-describedby="pokemon-details-modal-description">
             <Box
@@ -46,54 +99,7 @@ const DetailsWindow: React.FC<DetailsWindowProps> = ({ isOpen, onClose, pokemon 
                 >
                     <CloseIcon />
                 </Button>
-                {loading && <div>Loading...</div>}
-                {error && <div>Error: {error.message}</div>}
-                {pokemonDetails && (
-                    <Card variant="outlined" sx={{ minWidth: 400, minHeight: 200, margin: 'auto', fontFamily: 'Arial, sans-serif' }}>
-                        <CardContent>
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <img
-                                    src={pokemonDetails.image}
-                                    alt={pokemonDetails.name}
-                                    style={{
-                                        width: '180px',
-                                        height: '180px',
-                                        marginRight: '10px',
-                                        border: '2px solid black',
-                                        borderRadius: '8px',
-                                    }}
-                                />
-                                <div>
-                                    <div><b>Name: </b>{pokemonDetails.name}</div>
-                                    <div><b>Type: </b>{pokemonDetails.types.join(', ')}</div>
-                                    <PlayButton audioUrl={pokemonDetails.pokemonSound ?? ''} />
-                                </div>
-                            </div>
-                            <div><b>Features:</b></div>
-                            <ul>
-                                <li>Height: {pokemonDetails.details.height}</li>
-                                <li>Weight: {pokemonDetails.details.weight}</li>
-                                <li>Base Experience: {pokemonDetails.details.baseExperience}</li>
-                            </ul>
-                            <div><b>Abilities:</b></div>
-                            <ul>
-                                {pokemonDetails.abilities.map((ability, index) => (
-                                    <li key={index}>{ability}</li>
-                                ))}
-                            </ul>
-                            <div><b>Locations:</b></div>
-                            {pokemonDetails.locations.length > 0 ? (
-                                <ul>
-                                    {pokemonDetails.locations.map((location) => (
-                                        <li key={location}>{location}</li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <div>No known locations</div>
-                            )}
-                        </CardContent>
-                    </Card>
-                )}
+                {pokemon && pokemon.url && <PokemonDetails pokemon={pokemon} />}
             </Box>
         </Modal>
     );
